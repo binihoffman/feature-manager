@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feature Manager</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="version-header">
+                <h1 class="version-title">
+                    Version: <span id="versionNumber" contenteditable="true">1.0.0</span>
+                    <i class="fas fa-edit edit-icon"></i>
+                </h1>
+                <p class="version-subtitle">Feature Management Dashboard</p>
+                <div class="collaboration-status">
+                    <span id="connectionStatus" class="status-indicator">
+                        <i class="fas fa-circle"></i>
+                        <span id="statusText">Connecting...</span>
+                    </span>
+                    <span id="userCount" class="user-count">
+                        <i class="fas fa-users"></i>
+                        <span id="activeUsers">0</span> active
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="add-feature-section">
+                <button id="addFeatureBtn" class="add-feature-btn">
+                    <i class="fas fa-plus"></i>
+                    Add New Feature
+                </button>
+            </div>
+
+            <div class="features-container" id="featuresContainer">
+                <!-- Features will be dynamically added here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Feature Modal -->
+    <div id="featureModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add New Feature</h2>
+                <button class="close-btn" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="featureForm" class="feature-form">
+                <div class="form-group">
+                    <label for="featureName">Feature Name *</label>
+                    <input type="text" id="featureName" name="featureName" required placeholder="Enter feature name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="featureSize">Size</label>
+                    <select id="featureSize" name="featureSize">
+                        <option value="N/A">N/A</option>
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="engManager">Engineering Manager</label>
+                    <select id="engManager" name="engManager">
+                        <option value="N/A">N/A</option>
+                        <option value="Omer">Omer</option>
+                        <option value="Tom">Tom</option>
+                        <option value="Liad">Liad</option>
+                        <option value="Tom + Liad">Tom + Liad</option>
+                        <option value="Omer + Liad">Omer + Liad</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="prdLink">PRD Link</label>
+                    <input type="url" id="prdLink" name="prdLink" placeholder="https://example.com/prd">
+                </div>
+                
+                <div class="form-group">
+                    <label for="designLink">Design Link</label>
+                    <input type="url" id="designLink" name="designLink" placeholder="https://example.com/design">
+                </div>
+                
+                <div class="form-group">
+                    <label for="featureComments">Comments</label>
+                    <textarea id="featureComments" name="featureComments" placeholder="Add any comments or notes about this feature..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="featureStatus">Status</label>
+                    <select id="featureStatus" name="featureStatus">
+                        <option value="0">Nothing happened yet</option>
+                        <option value="1">2 pager was created</option>
+                        <option value="2">Size was set and TDS opened</option>
+                        <option value="3">PRD ready</option>
+                        <option value="4">Tech design ready</option>
+                    </select>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" id="cancelBtn" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Feature</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
