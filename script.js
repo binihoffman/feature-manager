@@ -18,8 +18,11 @@ class FeatureManager {
 
     async initializeFirebase() {
         try {
+            console.log('Initializing Firebase...');
+            
             // Listen for real-time updates to features
             db.collection('features').onSnapshot((snapshot) => {
+                console.log('Features snapshot received:', snapshot.size, 'documents');
                 this.features = [];
                 snapshot.forEach((doc) => {
                     this.features.push({ id: doc.id, ...doc.data() });
@@ -28,7 +31,7 @@ class FeatureManager {
                 this.updateConnectionStatus('Connected', 'success');
             }, (error) => {
                 console.error('Error listening to features:', error);
-                this.updateConnectionStatus('Connection Error', 'error');
+                this.updateConnectionStatus('Connection Error: ' + error.message, 'error');
             });
 
             // Listen for real-time updates to version
@@ -37,6 +40,8 @@ class FeatureManager {
                     this.currentVersion = doc.data().version;
                     document.getElementById('versionNumber').textContent = this.currentVersion;
                 }
+            }, (error) => {
+                console.error('Error listening to version:', error);
             });
 
             // Listen for active users
@@ -48,6 +53,8 @@ class FeatureManager {
                     }
                 });
                 this.updateUserCount();
+            }, (error) => {
+                console.error('Error listening to active users:', error);
             });
 
             // Add current user to active users
@@ -62,6 +69,7 @@ class FeatureManager {
             });
 
             // Load initial data
+            console.log('Loading initial data...');
             const featuresSnapshot = await db.collection('features').get();
             this.features = [];
             featuresSnapshot.forEach((doc) => {
@@ -75,10 +83,11 @@ class FeatureManager {
 
             this.renderFeatures();
             this.updateConnectionStatus('Connected', 'success');
+            console.log('Firebase initialization complete');
 
         } catch (error) {
             console.error('Error initializing Firebase:', error);
-            this.updateConnectionStatus('Connection Failed', 'error');
+            this.updateConnectionStatus('Connection Failed: ' + error.message, 'error');
         }
     }
 
@@ -94,6 +103,13 @@ class FeatureManager {
     updateUserCount() {
         const userCountElement = document.getElementById('activeUsers');
         userCountElement.textContent = this.activeUsers.size + 1; // +1 for current user
+    }
+
+    updateEpicCount() {
+        const epicCountElement = document.getElementById('epicCount');
+        if (epicCountElement) {
+            epicCountElement.textContent = this.features.length;
+        }
     }
 
     initializeApp() {
@@ -334,6 +350,9 @@ class FeatureManager {
         
         // Bind events to newly created elements
         this.bindFeatureEvents();
+        
+        // Update epic count
+        this.updateEpicCount();
     }
 
     createFeatureCard(feature) {
